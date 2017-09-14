@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="内存管理 - 引用计数1.内存管理原理：引用计数引用计数发展时间轴： 苹果在 2011 年的时候，在 WWDC 大会上提出了自动的引用计数（ARC）。ARC 背后的原理是依赖编译器的静态分析能力，通过在编译时找出合理的插入引用计数管理代码，从而彻底解放程序员。 直到 2013 年左右，苹果认为 ARC 技术足够成熟，直接将 macOS（当时叫 OS X）上的垃圾回收机制废弃，从而使得 ARC 迅速">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内存管理之 引用计数">
+<meta property="og:url" content="http://yoursite.com/2017/09/14/内存管理之-引用计数/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="内存管理 - 引用计数1.内存管理原理：引用计数引用计数发展时间轴： 苹果在 2011 年的时候，在 WWDC 大会上提出了自动的引用计数（ARC）。ARC 背后的原理是依赖编译器的静态分析能力，通过在编译时找出合理的插入引用计数管理代码，从而彻底解放程序员。 直到 2013 年左右，苹果认为 ARC 技术足够成熟，直接将 macOS（当时叫 OS X）上的垃圾回收机制废弃，从而使得 ARC 迅速">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/Users/sunmingyue/Desktop/WechatIMG163.jpeg">
+<meta property="og:updated_time" content="2017-09-14T08:14:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="内存管理之 引用计数">
+<meta name="twitter:description" content="内存管理 - 引用计数1.内存管理原理：引用计数引用计数发展时间轴： 苹果在 2011 年的时候，在 WWDC 大会上提出了自动的引用计数（ARC）。ARC 背后的原理是依赖编译器的静态分析能力，通过在编译时找出合理的插入引用计数管理代码，从而彻底解放程序员。 直到 2013 年左右，苹果认为 ARC 技术足够成熟，直接将 macOS（当时叫 OS X）上的垃圾回收机制废弃，从而使得 ARC 迅速">
+<meta name="twitter:image" content="http://yoursite.com/Users/sunmingyue/Desktop/WechatIMG163.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/14/内存管理之-引用计数/"/>
+
+
+
+
+
+  <title>内存管理之 引用计数 | </title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title"></span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/14/内存管理之-引用计数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="爱生活的小悦悦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">内存管理之 引用计数</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-14T16:08:28+08:00">
+                2017-09-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="内存管理-引用计数"><a href="#内存管理-引用计数" class="headerlink" title="内存管理 - 引用计数"></a>内存管理 - 引用计数</h3><h5 id="1-内存管理原理：引用计数"><a href="#1-内存管理原理：引用计数" class="headerlink" title="1.内存管理原理：引用计数"></a>1.内存管理原理：引用计数</h5><p><strong>引用计数发展时间轴：</strong></p>
+<p>苹果在 2011 年的时候，在 WWDC 大会上提出了自动的引用计数（ARC）。ARC 背后的原理是依赖编译器的静态分析能力，通过在编译时找出合理的插入引用计数管理代码，从而彻底解放程序员。</p>
+<p>直到 2013 年左右，苹果认为 ARC 技术足够成熟，直接将 macOS（当时叫 OS X）上的垃圾回收机制废弃，从而使得 ARC 迅速被接受。</p>
+<p>2014 年的 WWDC 大会上，苹果推出了 Swift 语言，而该语言仍然使用 ARC 技术，作为其<a href="https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/AutomaticReferenceCounting.html" target="_blank" rel="external">内存管理方式</a>。</p>
+<p><strong>虽然 ARC 帮我们解决了引用计数的大部分问题，但是还有一部分工作需要我们自己来处理</strong>。内存问题可能会导致内存泄漏，使得应用运行缓慢或者被系统终止进程。</p>
+<p>所以要想处理好内存问题，我们首先需要理解引用计数这种内存管理方式。</p>
+<p><strong>什么是引用计数</strong>？</p>
+<p>引用计数（Reference Count）是一个简单而有效的管理对象生命周期的方式。当我们创建一个新对象的时候，它的引用计数为 1，当有一个新的指针指向这个对象时，我们将其引用计数加 1，当某个指针不再指向这个对象是，我们将其引用计数减 1，当对象的引用计数变为 0 时，说明这个对象不再被任何指针指向了，这个时候我们就可以将对象销毁，回收内存。由于引用计数简单有效</p>
+<p>为了更形象一些，我们再来看一段 Objective-C 的代码。新建一个工程，因为现在默认的工程都开启了自动的引用计数 ARC（Automatic Reference Count)，我们先修改工程设置，给 AppDelegate.m 加上 <code>-fno-objc-arc</code> 的编译参数（如下图所示），这个参数可以启用手工管理引用计数的模式。</p>
+<p><img src="/Users/sunmingyue/Desktop/WechatIMG163.jpeg" alt="WechatIMG163"></p>
+<p><strong>为什么采用了引用计数的方式来管理内存呢？</strong></p>
+<p>上述例子比较简单，可能看不出引用计数的真正的用处，因为该对象的生命周期在一个函数内，即时不修改它的引用计数的也是可以的，只需要在函数返回前将该对象销毁即可。</p>
+<p>引用计数真正派上用场的场景是用于对象之间传递和共享数据。我们举一个具体的例子：</p>
+<p>场景1：</p>
+<p>按照假设有两个Cotnroller，分别为ControllerA、ControllerB，ControllerA中将对象M传递给ControllerB，在没有引用计数的情况下，一般内存管理的原则是 “谁申请谁释放”，那么ControllerA 就需要在ControllerB 不再需要对象M的时候，将 M 销毁。但ControllerB可能只是临时用一下对象 M，也可能觉得对象 M 很重要，将它设置成自己的一个成员变量，那这种情况下，什么时候销毁对象 M 就成了一个难题。</p>
+<p>场景2：</p>
+<p>对于这种情况，有一个暴力的做法，就是ControllerA 在调用完ControllerB之后，马上就销毁参数对象 M，然后ControllerB 需要将参数另外复制一份，生成另一个对象 M2，然后自己管理对象 M2 的生命期。但是这种做法有一个很大的问题，就是它带来了更多的内存申请、复制、释放的工作。本来一个可以复用的对象，因为不方便管理它的生命期，就简单的把它销毁，又重新构造一份一样的，实在太影响性能。</p>
+<p>场景3：</p>
+<p>我们另外还有一种办法，就是ControllerA 在构造完对象 M 之后，始终不销毁对象 M，由ControllerB 来完成对象 M 的销毁工作。如果ControllerB 需要长时间使用对象 M，它就不销毁它，如果只是临时用一下，则可以用完后马上销毁。这种做法看似很好地解决了对象复制的问题，但是它强烈依赖于 ControllerA、ControllerB 两个对象的配合，代码维护者需要明确地记住这种编程约定。而且，由于对象 M 的申请是在ControllerA中，释放在ControllerB 中，使得它的内存管理代码分散在不同对象中，管理起来也非常费劲。如果这个时候情况再复杂一些，例如ControllerB 需要再向ControllerC传递对象 M，那么这个对象在ControllerC 中又不能让对象 C 管理。所以这种方式带来的复杂性更大，更不可取。</p>
+<p>所以引用计数很好的解决了这个问题，在参数 M 的传递过程中，哪些对象需要长时间使用这个对象，就把它的引用计数加 1，使用完了之后再把引用计数减 1。所有对象都遵守这个规则的话，对象的生命期管理就可以完全交给引用计数了。我们也可以很方便地享受到共享对象带来的好处。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/14/浅析栈区和堆区内存分配的区别/" rel="next" title="浅析栈区和堆区内存分配的区别">
+                <i class="fa fa-chevron-left"></i> 浅析栈区和堆区内存分配的区别
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/14/内存检测-instrument介绍/" rel="prev" title="内存检测 - instrument介绍">
+                内存检测 - instrument介绍 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="爱生活的小悦悦" />
+          <p class="site-author-name" itemprop="name">爱生活的小悦悦</p>
+           
+              <p class="site-description motion-element" itemprop="description">Do one thing at a time,and do well</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/your-user-name" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/your-user-name" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                    
+                      Twitter
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存管理-引用计数"><span class="nav-number">1.</span> <span class="nav-text">内存管理 - 引用计数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-内存管理原理：引用计数"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.内存管理原理：引用计数</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">爱生活的小悦悦</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

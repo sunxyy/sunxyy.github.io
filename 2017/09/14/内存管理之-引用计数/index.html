@@ -94,20 +94,19 @@
 
 
 
-<meta name="description" content="浅析栈区和堆区内存分配的区别一直以来总是对这个问题的认识比较朦胧，我相信很多朋友也是这样的，总是听到内存一会在栈上分配，一会又在堆上分配，那么它们之间到底是怎么的区别呢？为了说明这个问题，我们先来看一下内存内部的组织情况．  从上图可知，程序占用的内存被分了以下几部分． 1、栈区（stack）由编译器自动分配释放 ，存放函数的参数值，局部变量的值等，内存的分配是连续的，类似于平时我们所说的栈，如果">
+<meta name="description" content="内存管理 - 引用计数1.内存管理原理：引用计数引用计数发展时间轴： 苹果在 2011 年的时候，在 WWDC 大会上提出了自动的引用计数（ARC）。ARC 背后的原理是依赖编译器的静态分析能力，通过在编译时找出合理的插入引用计数管理代码，从而彻底解放程序员。 直到 2013 年左右，苹果认为 ARC 技术足够成熟，直接将 macOS（当时叫 OS X）上的垃圾回收机制废弃，从而使得 ARC 迅速">
 <meta property="og:type" content="article">
-<meta property="og:title" content="浅析栈区和堆区内存分配的区别">
-<meta property="og:url" content="http://yoursite.com/2017/09/14/浅析栈区和堆区内存分配的区别/index.html">
+<meta property="og:title" content="内存管理之 引用计数">
+<meta property="og:url" content="http://yoursite.com/2017/09/14/内存管理之-引用计数/index.html">
 <meta property="og:site_name" content="学然后知不足">
-<meta property="og:description" content="浅析栈区和堆区内存分配的区别一直以来总是对这个问题的认识比较朦胧，我相信很多朋友也是这样的，总是听到内存一会在栈上分配，一会又在堆上分配，那么它们之间到底是怎么的区别呢？为了说明这个问题，我们先来看一下内存内部的组织情况．  从上图可知，程序占用的内存被分了以下几部分． 1、栈区（stack）由编译器自动分配释放 ，存放函数的参数值，局部变量的值等，内存的分配是连续的，类似于平时我们所说的栈，如果">
+<meta property="og:description" content="内存管理 - 引用计数1.内存管理原理：引用计数引用计数发展时间轴： 苹果在 2011 年的时候，在 WWDC 大会上提出了自动的引用计数（ARC）。ARC 背后的原理是依赖编译器的静态分析能力，通过在编译时找出合理的插入引用计数管理代码，从而彻底解放程序员。 直到 2013 年左右，苹果认为 ARC 技术足够成熟，直接将 macOS（当时叫 OS X）上的垃圾回收机制废弃，从而使得 ARC 迅速">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/Users/sunmingyue/Desktop/2.jpeg">
-<meta property="og:image" content="http://files.jb51.net/file_images/article/201308/201308130909595.jpg">
-<meta property="og:updated_time" content="2017-09-14T12:45:32.000Z">
+<meta property="og:image" content="http://yoursite.com/Users/sunmingyue/Desktop/WechatIMG163.jpeg">
+<meta property="og:updated_time" content="2017-09-14T12:45:09.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="浅析栈区和堆区内存分配的区别">
-<meta name="twitter:description" content="浅析栈区和堆区内存分配的区别一直以来总是对这个问题的认识比较朦胧，我相信很多朋友也是这样的，总是听到内存一会在栈上分配，一会又在堆上分配，那么它们之间到底是怎么的区别呢？为了说明这个问题，我们先来看一下内存内部的组织情况．  从上图可知，程序占用的内存被分了以下几部分． 1、栈区（stack）由编译器自动分配释放 ，存放函数的参数值，局部变量的值等，内存的分配是连续的，类似于平时我们所说的栈，如果">
-<meta name="twitter:image" content="http://yoursite.com/Users/sunmingyue/Desktop/2.jpeg">
+<meta name="twitter:title" content="内存管理之 引用计数">
+<meta name="twitter:description" content="内存管理 - 引用计数1.内存管理原理：引用计数引用计数发展时间轴： 苹果在 2011 年的时候，在 WWDC 大会上提出了自动的引用计数（ARC）。ARC 背后的原理是依赖编译器的静态分析能力，通过在编译时找出合理的插入引用计数管理代码，从而彻底解放程序员。 直到 2013 年左右，苹果认为 ARC 技术足够成熟，直接将 macOS（当时叫 OS X）上的垃圾回收机制废弃，从而使得 ARC 迅速">
+<meta name="twitter:image" content="http://yoursite.com/Users/sunmingyue/Desktop/WechatIMG163.jpeg">
 
 
 
@@ -136,13 +135,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/09/14/浅析栈区和堆区内存分配的区别/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/09/14/内存管理之-引用计数/"/>
 
 
 
 
 
-  <title>浅析栈区和堆区内存分配的区别 | 学然后知不足</title>
+  <title>内存管理之 引用计数 | 学然后知不足</title>
   
 
 
@@ -275,7 +274,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/14/浅析栈区和堆区内存分配的区别/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/14/内存管理之-引用计数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="爱生活的小悦悦">
@@ -292,7 +291,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">浅析栈区和堆区内存分配的区别</h1>
+          <h1 class="post-title" itemprop="name headline">内存管理之 引用计数</h1>
         
 
         <div class="post-meta">
@@ -304,7 +303,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-14T16:07:25+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-14T16:08:28+08:00">
                 2017-09-14
               </time>
             
@@ -369,35 +368,26 @@
       
 
       
-        <h1 id="浅析栈区和堆区内存分配的区别"><a href="#浅析栈区和堆区内存分配的区别" class="headerlink" title="浅析栈区和堆区内存分配的区别"></a>浅析栈区和堆区内存分配的区别</h1><p>一直以来总是对这个问题的认识比较朦胧，我相信很多朋友也是这样的，总是听到内存一会在栈上分配，一会又在堆上分配，那么它们之间到底是怎么的区别呢？为了说明这个问题，我们先来看一下内存内部的组织情况．</p>
-<p><img src="/Users/sunmingyue/Desktop/2.jpeg" alt="1"></p>
-<p>从上图可知，程序占用的内存被分了以下几部分．</p>
-<p><strong>1、栈区（stack）</strong>由编译器自动分配释放 ，存放函数的参数值，局部变量的值等，内存的分配是连续的，类似于平时我们所说的栈，如果还不清楚，那么就把它想成数组，它的内存分配是连续分配的，即，所分配的内存是在一块连续的内存区域内．当我们声明变量时，那么编译器会自动接着当前栈区的结尾来分配内存．</p>
-<p><strong>2、堆区（heap）</strong>一般由程序员分配释放， 若程序员不释放，程序结束时可能由操作系统回收．类似于链表，在内存中的分布不是连续的，它们是不同区域的内存块通过指针链接起来的．一旦某一节点从链中断开，我们要人为的把所断开的节点从内存中释放．</p>
-<p><strong>3、全局区（静态区）（static）</strong>全局变量和静态变量的存储是放在一块的，初始化的全局变量和静态变量在一块区域， 未初始化的全局变量和未初始化的静态变量在相邻的另一块区域。 程序结束后由系统释放</p>
-<p><strong>4、文字常量区</strong>常量字符串就是放在这里的。 程序结束后由系统释放</p>
-<p><strong>5、程序代码区</strong>存放函数体的二进制代码。</p>
-<p>char c; //栈上分配<br>char *p = new char[3]; //堆上分配，将地址赋给了p;</p>
-<p>在 编译器遇到第一条指令时，计算其大小，然后去查找当前栈的空间是大于所需分配的空间大小，如果这时栈内空间大于所申请的空间，那么就为其分配内存空间，注 意：在这里，内在空间的分配是连续的，是接着上次分配结束后进行分配的．如果栈内空间小于所申请的空间大小，那么这时系统将揭示栈溢出，并给出相应的异常 信息．</p>
-<p>编译器遇到第二条指令时，由于p是在栈上分配的，所以在为p分配内在空间时和上面的方法一样，但当遇到new关键字，那么编译器都知道，这是用户申请的动态内存空间，所以就会转到堆上去为其寻找空间分配．大家注意：堆上的内存空间不是连续的，它是由相应的链表将其 空间区时的内在区块连接的，所以在接到分配内存空间的指定后，它不会马上为其分配相应的空间，而是先要计算所需空间，然后再到遍列整个堆（即遍列整个链的 节点），将第一次遇到的内存块分配给它．最后再把在堆上分配的字符数组的首地址赋给p.，这个时候，大家已经清楚了，p中现在存放的是在堆中申请的字符数组的首地址，也就是在堆中申请的数组的地址现在被赋给了在栈上申请的指针变量p．为了更加形象的说明问题，请看下图：<br><img src="http://files.jb51.net/file_images/article/201308/201308130909595.jpg" alt="img"></p>
-<p>从上图可以看出，我们在堆上动态分配的数组的首地址存入了指针p所指向的内容．</p>
-<p><strong>请注意：</strong>在栈上所申请的内存空间，当我们出了变量所在的作用域后，系统会自动我们回收这些空间，而在堆上申请的空间，当出了相应的作用域以后，我们需要显式来释放所申请的内存空间，如果我们不及时得对这些空间进行释放，那么内存中的内存碎片就越来越多，从而我们的实际内存空间也就会变的越来越少，孤立的内存块越来越多。在这里，我们知道，堆中的内存区域不是连续的，还是将有效的内存区域经过链表指针连接起来的，如果我们申请到了某一块内存，那么这一块内存区将会从连续的（通过链表连接起来的）内存块上断开，如果我们在使用完后，不及时的对它进行释放，那么它就会孤立的开来，由于没有任何指针指向它，所以这个区域将成为内存碎片，所以在使用完动态分配的内存后，一定要显式的对它进行释放.</p>
-<p>小结： </p>
-<p>1 、内存分配方面：</p>
-<p>​    堆：堆是向高地址扩展的数据结构，一般由程序员分配释放， 若程序员不释放，程序结束时可能由 OS 回收 。注意它与数据结构中的堆是两回事，分配方式是类似于链表。可能用到的关键字如下： new 、 malloc 、 delete 、 free 等等。</p>
-<p>​    栈：栈是向低地址扩展的数据结构，由编译器 (Compiler) 自动分配释放，存放函数的参数值，局部变量的值等。其操作方式类似于数据结构中的栈。</p>
-<p>2 、申请方式方面：</p>
-<p>​    堆：需要程序员自己申请，并指明大小。在 c 中 malloc 函数如 p1 = (char *)malloc(10) ；在 C++ 中用 new 运算符，但是注意 p1 、 p2 本身是在栈中的。因为他们还是可以认为是局部变量。</p>
-<p>​    栈：由系统自动分配。 例如，声明在函数中一个局部变量 int b ；系统自动在栈中为 b 开辟空间。</p>
-<p>3 、系统响应方面：</p>
-<p>​    堆：操作系统有一个记录空闲内存地址的链表，当系统收到程序的申请时，会遍历该链表，寻找第一个空间大于所申请空间的堆结点，然后将该结点从空闲结点链表中删除，并将该结点的空间分配给程序，另外，对于大多数系统，会在这块内存空间中的首地址处记录本次分配的大小，这样代码中的 delete 语句才能正确的释放本内存空间。另外由于找到的堆结点的大小不一定正好等于申请的大小，系统会自动的将多余的那部分重新放入空闲链表中。</p>
-<p>​    栈：只要栈的剩余空间大于所申请空间，系统将为程序提供内存，否则将报异常提示栈溢出。</p>
-<p>4 、大小限制方面：</p>
-<p>​    堆：是不连续的内存区域。这是由于系统是用链表来存储的空闲内存地址的，自然是不连续的 ，而链表的遍历方向是由低地址向高地址。堆的大小受限于计算机系统中有效的虚拟内存。由此可见，堆获得的空间比较灵活，也比较大。</p>
-<p>​    栈： 是一块连续的内存的区域。这句话的意思是栈顶的地址和栈的最大容量是系统预先规定好的，栈的大小是固定的（是一个编译时就确定的常数），如果申请的空间超过栈的剩余空间时，将提示 overflow 。因此，能从栈获得的空间较小。</p>
-<p>5 、效率方面：</p>
-<p>​    堆：是由 new 分配的内存，一般速度比较慢，而且容易产生内存碎片，不过用起来最方便。</p>
-<p>​    栈：由系统自动分配，速度较快。但程序员是无法控制的。</p>
+        <h3 id="内存管理-引用计数"><a href="#内存管理-引用计数" class="headerlink" title="内存管理 - 引用计数"></a>内存管理 - 引用计数</h3><h5 id="1-内存管理原理：引用计数"><a href="#1-内存管理原理：引用计数" class="headerlink" title="1.内存管理原理：引用计数"></a>1.内存管理原理：引用计数</h5><p><strong>引用计数发展时间轴：</strong></p>
+<p>苹果在 2011 年的时候，在 WWDC 大会上提出了自动的引用计数（ARC）。ARC 背后的原理是依赖编译器的静态分析能力，通过在编译时找出合理的插入引用计数管理代码，从而彻底解放程序员。</p>
+<p>直到 2013 年左右，苹果认为 ARC 技术足够成熟，直接将 macOS（当时叫 OS X）上的垃圾回收机制废弃，从而使得 ARC 迅速被接受。</p>
+<p>2014 年的 WWDC 大会上，苹果推出了 Swift 语言，而该语言仍然使用 ARC 技术，作为其<a href="https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/AutomaticReferenceCounting.html" target="_blank" rel="external">内存管理方式</a>。</p>
+<p><strong>虽然 ARC 帮我们解决了引用计数的大部分问题，但是还有一部分工作需要我们自己来处理</strong>。内存问题可能会导致内存泄漏，使得应用运行缓慢或者被系统终止进程。</p>
+<p>所以要想处理好内存问题，我们首先需要理解引用计数这种内存管理方式。</p>
+<p><strong>什么是引用计数</strong>？</p>
+<p>引用计数（Reference Count）是一个简单而有效的管理对象生命周期的方式。当我们创建一个新对象的时候，它的引用计数为 1，当有一个新的指针指向这个对象时，我们将其引用计数加 1，当某个指针不再指向这个对象是，我们将其引用计数减 1，当对象的引用计数变为 0 时，说明这个对象不再被任何指针指向了，这个时候我们就可以将对象销毁，回收内存。由于引用计数简单有效</p>
+<p>为了更形象一些，我们再来看一段 Objective-C 的代码。新建一个工程，因为现在默认的工程都开启了自动的引用计数 ARC（Automatic Reference Count)，我们先修改工程设置，给 AppDelegate.m 加上 <code>-fno-objc-arc</code> 的编译参数（如下图所示），这个参数可以启用手工管理引用计数的模式。</p>
+<p><img src="/Users/sunmingyue/Desktop/WechatIMG163.jpeg" alt="WechatIMG163"></p>
+<p><strong>为什么采用了引用计数的方式来管理内存呢？</strong></p>
+<p>上述例子比较简单，可能看不出引用计数的真正的用处，因为该对象的生命周期在一个函数内，即时不修改它的引用计数的也是可以的，只需要在函数返回前将该对象销毁即可。</p>
+<p>引用计数真正派上用场的场景是用于对象之间传递和共享数据。我们举一个具体的例子：</p>
+<p>场景1：</p>
+<p>按照假设有两个Cotnroller，分别为ControllerA、ControllerB，ControllerA中将对象M传递给ControllerB，在没有引用计数的情况下，一般内存管理的原则是 “谁申请谁释放”，那么ControllerA 就需要在ControllerB 不再需要对象M的时候，将 M 销毁。但ControllerB可能只是临时用一下对象 M，也可能觉得对象 M 很重要，将它设置成自己的一个成员变量，那这种情况下，什么时候销毁对象 M 就成了一个难题。</p>
+<p>场景2：</p>
+<p>对于这种情况，有一个暴力的做法，就是ControllerA 在调用完ControllerB之后，马上就销毁参数对象 M，然后ControllerB 需要将参数另外复制一份，生成另一个对象 M2，然后自己管理对象 M2 的生命期。但是这种做法有一个很大的问题，就是它带来了更多的内存申请、复制、释放的工作。本来一个可以复用的对象，因为不方便管理它的生命期，就简单的把它销毁，又重新构造一份一样的，实在太影响性能。</p>
+<p>场景3：</p>
+<p>我们另外还有一种办法，就是ControllerA 在构造完对象 M 之后，始终不销毁对象 M，由ControllerB 来完成对象 M 的销毁工作。如果ControllerB 需要长时间使用对象 M，它就不销毁它，如果只是临时用一下，则可以用完后马上销毁。这种做法看似很好地解决了对象复制的问题，但是它强烈依赖于 ControllerA、ControllerB 两个对象的配合，代码维护者需要明确地记住这种编程约定。而且，由于对象 M 的申请是在ControllerA中，释放在ControllerB 中，使得它的内存管理代码分散在不同对象中，管理起来也非常费劲。如果这个时候情况再复杂一些，例如ControllerB 需要再向ControllerC传递对象 M，那么这个对象在ControllerC 中又不能让对象 C 管理。所以这种方式带来的复杂性更大，更不可取。</p>
+<p>所以引用计数很好的解决了这个问题，在参数 M 的传递过程中，哪些对象需要长时间使用这个对象，就把它的引用计数加 1，使用完了之后再把引用计数减 1。所有对象都遵守这个规则的话，对象的生命期管理就可以完全交给引用计数了。我们也可以很方便地享受到共享对象带来的好处。</p>
 
       
     </div>
@@ -422,8 +412,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/09/14/浅谈block的应用与实现/" rel="next" title="浅谈block的应用与实现">
-                <i class="fa fa-chevron-left"></i> 浅谈block的应用与实现
+              <a href="/2017/09/14/浅析栈区和堆区内存分配的区别/" rel="next" title="浅析栈区和堆区内存分配的区别">
+                <i class="fa fa-chevron-left"></i> 浅析栈区和堆区内存分配的区别
               </a>
             
           </div>
@@ -432,8 +422,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/09/14/内存管理之-引用计数/" rel="prev" title="内存管理之 引用计数">
-                内存管理之 引用计数 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/09/14/内存检测-instrument介绍/" rel="prev" title="内存检测 - instrument介绍">
+                内存检测 - instrument介绍 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -583,7 +573,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#浅析栈区和堆区内存分配的区别"><span class="nav-number">1.</span> <span class="nav-text">浅析栈区和堆区内存分配的区别</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存管理-引用计数"><span class="nav-number">1.</span> <span class="nav-text">内存管理 - 引用计数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-内存管理原理：引用计数"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.内存管理原理：引用计数</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

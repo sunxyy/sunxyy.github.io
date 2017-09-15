@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="内存检测 - instrument关于Instrumentsinstruments 是一个强大的、灵活的 性能分析 和测试工具的Xcode工具集的一部分。它的目的是帮助您配置您的OS X和iOS应用程序、进程和设备，以便更好地理解和优化他们的行为和性能。从应用程序开发过程的开始将工具集成到您的工作流中，可以帮助您在开发周期的早期找到问题。 在Instruments中，您使用专门的工具，来跟踪应用程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内存检测 - instrument介绍">
+<meta property="og:url" content="http://yoursite.com/2017/09/14/内存检测-instrument介绍/index.html">
+<meta property="og:site_name" content="学然后知不足">
+<meta property="og:description" content="内存检测 - instrument关于Instrumentsinstruments 是一个强大的、灵活的 性能分析 和测试工具的Xcode工具集的一部分。它的目的是帮助您配置您的OS X和iOS应用程序、进程和设备，以便更好地理解和优化他们的行为和性能。从应用程序开发过程的开始将工具集成到您的工作流中，可以帮助您在开发周期的早期找到问题。 在Instruments中，您使用专门的工具，来跟踪应用程">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/924077/201604/924077-20160418191843570-518724625.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/924077/201604/924077-20160418191904820-1877176319.png">
+<meta property="og:image" content="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_record_button_2x.png">
+<meta property="og:image" content="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_stop_button_2x.png">
+<meta property="og:image" content="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_record_button_2x.png">
+<meta property="og:image" content="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_usercode_icon_2x.png">
+<meta property="og:image" content="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_xcode_2x.png">
+<meta property="og:image" content="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/icon_detail_pane_gotoarrow_2x.png">
+<meta property="og:image" content="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_hidesystemcalls_button_2x.png">
+<meta property="og:image" content="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_xcode_2x.png">
+<meta property="og:image" content="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_record_button_2x.png">
+<meta property="og:image" content="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/icon_detail_pane_gotoarrow_2x.png">
+<meta property="og:image" content="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_hidesystemcalls_button_2x.png">
+<meta property="og:image" content="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_usercode_icon_2x.png">
+<meta property="og:image" content="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_xcode_2x.png">
+<meta property="og:updated_time" content="2017-09-14T12:45:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="内存检测 - instrument介绍">
+<meta name="twitter:description" content="内存检测 - instrument关于Instrumentsinstruments 是一个强大的、灵活的 性能分析 和测试工具的Xcode工具集的一部分。它的目的是帮助您配置您的OS X和iOS应用程序、进程和设备，以便更好地理解和优化他们的行为和性能。从应用程序开发过程的开始将工具集成到您的工作流中，可以帮助您在开发周期的早期找到问题。 在Instruments中，您使用专门的工具，来跟踪应用程">
+<meta name="twitter:image" content="http://images2015.cnblogs.com/blog/924077/201604/924077-20160418191843570-518724625.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/14/内存检测-instrument介绍/"/>
+
+
+
+
+
+  <title>内存检测 - instrument介绍 | 学然后知不足</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">学然后知不足</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/14/内存检测-instrument介绍/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="爱生活的小悦悦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="学然后知不足">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">内存检测 - instrument介绍</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-14T16:08:48+08:00">
+                2017-09-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"> 浏览</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="内存检测-instrument"><a href="#内存检测-instrument" class="headerlink" title="内存检测 - instrument"></a>内存检测 - instrument</h3><h4 id="关于Instruments"><a href="#关于Instruments" class="headerlink" title="关于Instruments"></a><strong>关于Instruments</strong></h4><p>instruments 是一个强大的、灵活的 性能分析 和测试工具的Xcode工具集的一部分。它的目的是帮助您配置您的OS X和iOS应用程序、进程和设备，以便更好地理解和优化他们的行为和性能。从应用程序开发过程的开始将工具集成到您的工作流中，可以帮助您在开发周期的早期找到问题。</p>
+<p>在Instruments中，您使用专门的工具，来跟踪应用程序、进程和设备的不同方面。Instruments收集数据作为它的概况，并向您详细介绍分析结果。</p>
+<p>与其他性能和调试工具不同，Instruments允许您收集大量不同类型的数据，并排查看它们。这使得识别可能被忽略的趋势变得更容易。例如，应用程序可能会显示由于多个开放网络连接而导致的大量内存增长。通过使用Allocations 和Connections工具一起，您可以识别不关闭的连接，从而导致快速的内存增长原因。</p>
+<p>通过有效地使用Instruments，您可以：</p>
+<ul>
+<li>检查一个或多个应用程序或进程的行为</li>
+<li>检查设备特定的功能，如Wi-Fi和蓝牙</li>
+<li>在模拟器或物理设备上执行概要分析</li>
+<li>创建自定义的DTrace仪器分析方面的系统和应用程序的行为</li>
+<li>追踪问题在你的源代码</li>
+<li>对应用程序进行性能分析</li>
+<li>查找应用程序中的内存问题，如泄漏、废弃内存和僵尸</li>
+<li>找出优化你的应用程序以提高电源效率的方法</li>
+<li>执行一般系统级故障排除</li>
+<li>将工具配置保存为模板</li>
+</ul>
+<p>虽然它是嵌入在可使用Xcode，但Instruments是一个单独的应用程序，如果需要的话可以使用独立。</p>
+<h3 id="The-Instruments-Workflow"><a href="#The-Instruments-Workflow" class="headerlink" title="The Instruments Workflow"></a><strong>The Instruments Workflow</strong></h3><p>Instruments看起来是一个复杂的app，的确如此，因为它能够用来收集app的各种有用的信息，帮助你诊断和解决问题。然而，从整体上看，instrument的工作流程相对比较简单。如图：</p>
+<p><img src="http://images2015.cnblogs.com/blog/924077/201604/924077-20160418191843570-518724625.png" alt="img"></p>
+<p>概括来说，使用Instruments一般包括以下几步：</p>
+<ol>
+<li>创建一个包含想要使用的工具和环境的记录文档。</li>
+<li>指定一个设备和一个要监测的app。</li>
+<li>监测app。</li>
+<li>分析获取到的数据。</li>
+<li>修复源码中的问题。</li>
+</ol>
+<h4 id="了解何时使用Instruments"><a href="#了解何时使用Instruments" class="headerlink" title="了解何时使用Instruments"></a>了解何时使用Instruments</h4><p>使用Xcode测试app时，先不启用Instruments，先打开debug navigator（左上角按钮第六个）。这里提供了一些抽象程度较高的信息，这些信息和app的CPU、内存、电量使用等有关系。通常，debug navigator提供的信息是让开发者快速的改善性能和解决一般性问题。当开发者需要更加详细的分析数据的时候，Instruments派上用场了。</p>
+<p><img src="http://images2015.cnblogs.com/blog/924077/201604/924077-20160418191904820-1877176319.png" alt="img"></p>
+<h3 id="About-This-Document-文档结构说明"><a href="#About-This-Document-文档结构说明" class="headerlink" title="About This Document 文档结构说明"></a>About This Document 文档结构说明</h3><p>为了方便开发者快速找到想要的信息，这个文档按照Instruments不同的关注点来组织。</p>
+<ul>
+<li>第一部分关注使用Instruments。包括创建一个document、找到一个你需要的具体的instrument工具、分析app、分析数据等等。在这里可以知道Instruments的一般典型操作。</li>
+<li>第二部分涵盖了更多具体领域的任务，比如提高性能、解决内存问题、提高电池使用时间等。</li>
+<li>最后一部分给出了个性化的instruments和模板的使用指南，还有一些其他的资源和参考。</li>
+</ul>
+<h4 id="Prerequisites-先决条件"><a href="#Prerequisites-先决条件" class="headerlink" title="Prerequisites 先决条件"></a>Prerequisites 先决条件</h4><p>Background Knowledge 你需要了解的知识</p>
+<p>使用Instruments之前，你需要对Xcode的工作十分了解，还有app开发的相关概念，比如building和running一个app，如何使用真机调试等。</p>
+<p>你还需要熟悉你想要监测的参数的核心概念。比如你想要查看app的内存使用情况，那么你需要知道一些内存管理的知识，和内存可能潜在的问题（内存泄露、僵尸对象）。如果你想要查看app的性能问题，你需要了解CPU和线程使用。如果你想解决电池使用过快的问题，你需要了解各种影响电池使用的事情，比如屏幕亮度，网络接口（GPS、蓝牙、Wi-Fi）使用，和timer的使用。</p>
+<p>这个文档中会提及一些背景知识。外部有些资源可以查看： </p>
+<ul>
+<li>相关文档（请查看原文超连接）</li>
+<li>WWDC Videos</li>
+</ul>
+<h4 id="System-Requirements-系统要求"><a href="#System-Requirements-系统要求" class="headerlink" title="System Requirements 系统要求"></a>System Requirements 系统要求</h4><p>Instruments安装在Xcode里。如果你还没有安装Xcode，先下载安装。</p>
+<p>如果你打算在真机上分析app，需要provision你的设备。参考Lauching Your App on Decvices（请查看原文连接）。</p>
+<p>注意：</p>
+<p>Instruments在Xcode3.0以后、OS X v10.5以后可用。</p>
+<p>Instruments可以分析iOS6以后的设备。</p>
+<h1 id="2-About-Memory-Analysis"><a href="#2-About-Memory-Analysis" class="headerlink" title="2. About Memory Analysis"></a>2. About Memory Analysis</h1><p>无论什么时候APP创建对象，系统都会为对象分配内存。惯例上，APP将跟踪这些对象，并且在不需要的时候释放它们以至于能够为其它对象重新分配内存。ARC将使得内存事情变得非常简单，将由系统负责内存管理。随着ARC的出现，系统将监控对象，使对象在合适的时候分配和释放，APP将几乎不需要做什么工作。不管内存如何管理，但是，即使是最好的APP在某些情况下也可能遇到难以定位的内存问题。</p>
+<p>Instruments能够帮助绘制APP是怎样使用内存的图片，Instruments更容易识别潜在的问题区域。它甚至能够自动检测内存问题的类型并且进行标记，方便我们的分析。使用Instruments来监测和跟踪如下情况：</p>
+<p><strong>Overall Memory Use：</strong>监控APP如何使用内存并且与系统中其他活跃进程使用内存进行比较。寻找内存使用大的或者意想不到的内存增长。可以看<a href="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/MonitoringMemoryUsage.html#//apple_ref/doc/uid/TP40004652-CH33-SW1" target="_blank" rel="external">Monitor Memory Usage</a>.</p>
+<p><strong>Leaked Memory</strong>：在某个点内存已经被分配，但是一直被释放掉并且不再被APP引用。正是因为并没有对象引用该区域内存，因此无法释放此处内存，该内存也不能够被再一次使用。例如：假定我们编写一个APP，在绘制的时候创建了一个矩形对象，但是当绘制结束却从未释放该对象。在这种情况下：我们的APP可能泄露越来越多的内存。为了解决泄露，我们需要知道哪一个对象并没有被释放掉，这时修改APP在适合的适合释放该对象。 <a href="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/FindingLeakedMemory.html#//apple_ref/doc/uid/TP40004652-CH81-SW1" target="_blank" rel="external">Find Memory Leaks</a></p>
+<p><strong>Abandoned Memory</strong>：由于某些原因内存被分配了，但是它并不需要和被引用。例如：假设我们的APP中在图片被缓存之后又添加了图片(images)到缓存，使用了两倍的内存存储相同的images。或者，APP中拥有一个包含对象的数组，为了能够在需要的时候访问，但是事实上你从未使用。不像内存泄露，被遗弃的内存(abandoned memory)好像仍然在APP中的某个地方引用。它仅仅是没有目的性，因为在技术上是合理的，所以对于nstruments来说，Abandoned Memory更难识别，需要更多的检测工作。<a href="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/FindingAbandonedMemory.html#//apple_ref/doc/uid/TP40004652-CH80-SW1" target="_blank" rel="external">Find Abandoned Memory</a>.</p>
+<p><strong>Zombies：</strong>这是内存已经被释放并且不再需要了，但是在代码中仍然有某个地方引用了它。例如：假设你的APP中包含了图片缓存，一旦缓存被清理，在APP中不能够尝试着引用不存在的对象。对于这些不存在的对象，我们称之为僵尸对象(zombies) 。<a href="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/EradicatingZombies.html#//apple_ref/doc/uid/TP40004652-CH82-SW1" target="_blank" rel="external">Find Zombies</a>.</p>
+<p>由于内存问题能够变得非常困难被发现，为了寻找意想不到或者无限制的内存增长，可以对APP的不同阶段进行周期性快拍(snapshots )。我们能够对比快拍来确定对象是怎样被分配和释放，和内存的超时使用。</p>
+<p>通过持续执行一系列重复的用户行为，导致APP进入新的状态和回到最初状态，对于测试APP非常重要。这种类型的搜索称为generational analysis，每次APP进入新的状态，“generation”对象将被创建。在大多数情况下，当APP回到最初状态的时候，你应该期待这些对象被释放掉。例如：如果APP打开了Window，当Window被关闭的时候，任意的Window对象都应该被释放掉。如果这些对象没有被释放掉，这是可能会发生内存问题。当执行generational analysis，初始化generationa可能呈现比我们预期的情况产生更大的内存，由于缓存和初始化过程。因此，需要多次重复用户动作，为了获得真实的APP体验感觉。对于更深层次的内存问题，可以看<a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/MemoryMgmt.html#//apple_ref/doc/uid/10000011i" target="_blank" rel="external">Advanced Memory Management Programming Guide</a>.</p>
+<h1 id="Monitor-Memory-Usage"><a href="#Monitor-Memory-Usage" class="headerlink" title="Monitor Memory Usage"></a>Monitor Memory Usage</h1><p><strong>使用Activity Monitor性能模板来跟踪APP真实和虚拟内存，并且可以对照运行在系统上的其它的进程的。</strong></p>
+<p><strong>创建跟踪文件监控整体内存使用情况</strong></p>
+<p>1：Launch Instruments. 启动Instruments</p>
+<p>2：In the profiling template selection dialog that appears, click Activity Monitor.  选择Activity Monitor</p>
+<p>3：Choose your device and app from the target device and process lists. 选择设备和APP</p>
+<p>4：Click Choose to create a trace document. 创建跟踪文件</p>
+<p>Activity Monitor 性能分析模板包括Activity Monitor 工具，并且预先被配置显示系统加载和虚拟内存的大小。我们能够使用其他内存相关的统计来并使用监控面板来查看。</p>
+<p><strong>显示监控的内存统计</strong></p>
+<p>1：Press Command-1 to display the record settings area of the inspector pane (if it’s not already opened). 如果录制设置部分没有打开，可以使用 Command-1 进行打开</p>
+<p>2：In the statistics to list area of the inspector, select the memory-related statistics you want to see.The following memory-related statistics are available for display:在监控面板区域的statistics to list 可以选择与内存相关的统计选项，下面是可以获取的显示：</p>
+<p><strong>Physical Memory Wired —</strong>The amount of memory being used by the operating system  操作系统所使用的内存情况</p>
+<p><strong>Physical Memory Active</strong>  —The amount of memory being used by processes other than the operating system.   对比操作系统其它进程使用的内存数量</p>
+<p><strong>Physical Memory Inactive</strong>—The amount of memory that was recently released 最近释放的内存数量</p>
+<p><strong>Physical Memory Used</strong>—The total amount of memory that was used while performing the sample 当执行采样时，全部使用的内存数量</p>
+<p><strong>Physical Memory Free</strong>—The amount of available memory.  可获得的内存数量</p>
+<p><strong>Total VM Size</strong>—The total size of virtual memory.  虚拟内存的全部数量</p>
+<p><strong>VM Page In Bytes</strong>—The amount of memory calls sent to RAM. 内存调用发送到RAM的数量</p>
+<p><strong>VM Page Out Bytes</strong>—The amount of memory calls sent to disk.  内存调用发送到磁盘的数量</p>
+<p><strong>VM Swap Used</strong>—The amount of memory called from disk. 磁盘内存被调用的梳理</p>
+<p>3：In the system statistics area, select the memory-related statistics you want to see. If desired, click the shape or color controls to change how the statistics are represented in the timeline.  在系统统计区域，选择我们想统计的与内存相关的选项，点击shape或Color可以改变在timeline的统计显示</p>
+<p><strong>为了获取整体内存的使用详情</strong></p>
+<p>1：Click the Record button (<img src="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_record_button_2x.png" alt="image: ../Art/inline_record_button_2x.png">) in the toolbar or press Command-R to begin recording. 点击录制按钮开始记录</p>
+<p>2：Use your app normally. 正常使用APP</p>
+<p>​      As the Activity Monitor instrument profiles your app, it performs samples at periodic intervals and displays the results in the timeline and detail panes.</p>
+<p>3：Click the Stop button (<img src="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_stop_button_2x.png" alt="image: ../Art/inline_stop_button_2x.png">) in the toolbar or press Command-R again when you’re ready to stop recording. 停止记录</p>
+<p>建议：当APP配置后，选择在timeline中插入旗帜(flag)来指示这里有执行具体的任务。例如：在创建新的document之前添加flag，当我们探索分析获取的数据，可以直接到flag去进行分析。</p>
+<p>时间面板(timeline pane)提供了图示显示收集的数据。滚动timeline能够理解APP和其他运行系统上进程是如何使用内存的。对于跟多详情，可以进一步理解详情面板。</p>
+<p><strong>To view summarized memory usage by sample</strong></p>
+<p>1：Click the Activity Monitor track in the timeline.  在timeline点击Activity Monitor进行跟踪</p>
+<p>2：Choose Samples from the detail type list in the navigation bar of the detail pane. 选择采样</p>
+<p><strong>To view detailed memory usage by a process at a specific point during profiling</strong></p>
+<p>1：Click the Activity Monitor track in the timeline  在timeline点击Activity Monitor进行跟踪</p>
+<p>2：Press Command-2 to display the display settings area of the inspector pane (if it’s not already opened). 打开详情面板</p>
+<p>3：In the process detail tracking area of the inspector, click “Track inspection head” to configure the detail pane to display results based on the currently selected area in the timeline, rather than the latest sample performed. 在监控面板中的过程详情跟踪，点击“Track inspection head”来配置详情面板，基于当前选中的timeline，而不是最新执行的采样</p>
+<p>4：Select a point in the timeline to view the statistics that were captured at that time. 选中timeline中的点查看数据</p>
+<p>5：View memory usage statistics in the detail pane.  在详情面板看内存使用统计</p>
+<p>Use the detail type list to toggle between a summary view of the collected data by process or a parent child view.</p>
+<h1 id="Find-Abandoned-Memory"><a href="#Find-Abandoned-Memory" class="headerlink" title="Find Abandoned Memory"></a>Find Abandoned Memory</h1><p>Allocations 性能模板使用Allocation和VM Tracker工具来测量APP整体和虚拟内存的使用。但是，为了查找未使用的内存(abandoned memory)即内存已经被分配但是并没有使用，应该集中于Allocations工具，该工具测量堆内存的使用并且追踪分配，包括由类分配的具体对象。</p>
+<p>由于未使用的内存是仍然在APP的某个地方被引用，所以Instrument不能够确定它的重要性。为了找到该部分未使用的内存，使用generational analysis确保在重复执行相同的操作时，内存不会持续增长。例如：结束和开始一个新的游戏，打开和关闭Window，创建和删除联系，所有的操作都未设置优先权，得到稳定的内存状态。大量的循环操作不应该导致未知的内存增加。Instrument能够帮助我们找到相关内存增长对应的具体对象，以至于我们能够释放这些对象减低APP的内存足迹。</p>
+<p><strong>To look for abandoned memory in your app</strong></p>
+<p>1：Launch Instruments.           启动Launch Instruments.</p>
+<p>2：In the profiling template selection dialog that appears, click Allocations.     在出现的性能分析框中选中 Allocations</p>
+<p>3：Choose your device and app from the target device and process lists.        选中设备和APP</p>
+<p>4：Click Choose to create a trace document.                 点击Choose创建trace document</p>
+<p>5：Click the Allocations instrument in the timeline pane.                在时间面板中点击Allocations工具</p>
+<p>6：Press Command-2 to show the display settings area of the inspector pane.This gives you quick access to the Mark Generation button, which you use to flag different generations of actions as you profile your app.             点击 Command-2 显示设置区域，或者直接在最右侧面板中点击中间齿轮⚙按钮，这里我们可以访问Mark Generation按钮，可以用来标记不同的 generations</p>
+<p>7：Click the Record button  in the toolbar (or press Command-R) to begin recording.               点击录制按钮开始记录</p>
+<p>8：Perform a short sequence of repeatable actions in your app.In order to accurately generate trends, this should be a set of actions that starts and finishes with the app in the same state.             在APP中执行一系列重复的行为,来获取准确的数据</p>
+<p>9：Click the Mark Generation button in the inspector pane.             点击右侧监督面板中，设置区域下的Mark Generation按钮，实现快照。快照成功显示在详情面板</p>
+<p>​     A flag appears in the track pane to identify the generation.            一个红旗标志将显示在轨道上标识generation</p>
+<p>​     A list of generations you’ve marked is shown in the detail pane. Each generation includes a list of allocations that has occurred since the previous generation. </p>
+<p>​    详情面板会显示一系列的generation，每一个generation都包括从之前generation开始的一系列分配。</p>
+<p>​      You can also mark generations after you’re done recording by dragging the inspection head in the track pane’s timeline to the desired location and clicking Mark Generation. 我们也可以在录制结束之后 mark generations，通过拖动检测头到时间轴面板中需要的位置并进行Mark Generation。</p>
+<p>10：Perform steps 8 and 9 several times while monitoring the detail pane until you see whether memory is growing without limit. 当监控详情面板执行步骤8和9几次一直到你看到内存是否无限制地增长。</p>
+<p>11：Click the Stop button in the toolbar (or press Command-R again) when you’re ready to stop recording. 点击停止按钮停止记录</p>
+<p>12：Scan through the generations in the detail pane and find one that seems representative of repeated memory growth. 扫描详情面板的generations 并找到一个反复内存增长的</p>
+<p>​      The Growth and # Persistent columns tell you how much additional memory and how many allocations have occurred since the previous generation. If your app returns to its original state after an operation, you shouldn’t expect there to be growth from generation to generation.           Growth 和 # Persistent 专栏将告诉我们对比之前的快照又增加了多少内存，又有多少被分配。如果在执行一次操作之后返回了最初的状态，那么这里将不会有内存的增长。</p>
+<p>13：Click the disclosure triangle of a generation to display new objects that have been allocated since the prior generation. 点击三角符号来显示已经被分配的新对象</p>
+<p>14：Look for objects that are persisting. If you identify one, click the disclosure triangle to display its instances. 寻找持久化的对象，如果确认了，点击三角显示对应的实例</p>
+<p>15：Select an object instance. 选择对象实例</p>
+<p>16：Press Command-3 to display a stack trace for the selected instance in the extended detail area of the inspector. 按压Command-3在监督的扩展面板区域中显示选中实例的轨道踪迹</p>
+<p>This stack trace provides the complete list of method calls responsible allocating the instance.      该轨道跟踪提供了完整的创建实例的方法列表</p>
+<p>17：Click the Collapse button  in the extended detail area to hide system calls in the stack trace. This makes it easier to locate your app’s methods.</p>
+<p>Calls made by your app are colored black and preceded by a user code icon  点击按钮隐藏系统在轨道踪迹中的的调用，这样更加容易定位APP的方法</p>
+<p>18：Double-click a method in the stack trace to display its code in Instruments.        双击在堆栈轨道中现实的方法</p>
+<p>19：Click the Xcode button at the top of the detail pane to open the code in Xcode for editing.         点击顶部的Xcode按钮打开工程进行编辑</p>
+<p>20：Determine whether the allocation is useful. If it’s not, it’s abandoned memory that needs to be resolved.        确定分配是否有用，如果没有用，那么背抛弃的内存需要被处理</p>
+<h1 id="Find-Memory-Leaks"><a href="#Find-Memory-Leaks" class="headerlink" title="Find Memory Leaks"></a>Find Memory Leaks</h1><p>Leaks分析模板使用了Allocations和Leaks工具来测量APP整体的内存使用并检查泄露，泄漏即内存已分配给对象但是对象不在被引用和获取。</p>
+<p>注意：如果Instruments有权利获取APP中的源码信息，那么内存泄露会通过类名报道。否则，内存泄露将使用内存地址显示对应的部分，比如：Malloc-size.为了确保Instruments有权利获取APP代码信息，在Xcode中初始化profiling(see<a href="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Recording,Pausing,andStoppingTraces.html#//apple_ref/doc/uid/TP40004652-CH12-SW10" target="_blank" rel="external">Profile from Xcode</a>) 或者 配置符号映射文件(configure a symbol mappings file see <a href="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/LocatingSymbolsforYourData.html#//apple_ref/doc/uid/TP40004652-CH87-SW1" target="_blank" rel="external">Map Data to Source Code</a>).</p>
+<p><strong>To look for memory leaks</strong></p>
+<p>1：Launch Instruments.</p>
+<p>2：In the profiling template selection dialog that appears, click Leaks.</p>
+<p>3：Choose your device and app from the target device and process lists.</p>
+<p>4：Click Choose to create a trace document.</p>
+<p>5：Click the Record button (<img src="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_record_button_2x.png" alt="image: ../Art/inline_record_button_2x.png">) in the toolbar (or press Command-R) to begin recording.</p>
+<p>6：Use your app normally.</p>
+<p>7：Watch the Leaks instrument in the timeline pane for leaks. A leak appears as a red bar.   在时间轴面板观察Leaks工具，如果有内存泄露将会显示红色小状态图形</p>
+<p>8：Click the Leaks instrument in the timeline pane to display leak-related information in the detail pane.  点击 Leaks instrument，在详情面板查看相关信息</p>
+<p>9：Choose Call Tree from the detail type list in the navigation bar of the detail pane.  在详情面板的高航条中选择 Call Tree</p>
+<p>​     A list of method calls related to any detected leaks is displayed.   容易和内存泄露被检测到都会显示在详情面板中</p>
+<p>10：Press Command-2 to show the display settings area of the inspector pane.</p>
+<p>11：Under the Call Tree display settings, select Invert Call Tree and Hide System Libraries.    在Call Tree显示设置区域，选中 Invert Call Tree 和 Hide System Libraries</p>
+<p>The most recent method calls are shown first. It also helps narrow down the list of method calls to ones made by your app. Method calls made by your app are colored black and preceded by a user code icon (<img src="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_usercode_icon_2x.png" alt="image: ../Art/inline_usercode_icon_2x.png">).   最近的方法调用将首先显示。它还有助于缩小的列表方法调用的应用程序</p>
+<p>12：In the call tree, select a method call you want to investigate.   在 call tree中，选择我们想调查的方法</p>
+<p>13：Press Command-3 to display a stack trace for the selected method call in the extended detail area of the inspector.  Command-3在监督区域的扩展面板中查看选中方法的轨道踪迹</p>
+<p>14：Double-click the method call in the stack trace to display its code in Instruments. 双击方法定位代码</p>
+<p>15：Click the Xcode button (<img src="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_xcode_2x.png" alt="image: ../Art/inline_xcode_2x.png">) at the top of the detail pane to open the code in Xcode for review and editing.  点击顶部的Xcode按钮调到对应代码部分进行编辑和修改。</p>
+<p>在打开Xcode查看代码所创建的内存泄露，内存泄露可能仍然不清楚，即不是那么明显，Leaks instrument允许我们使用详情面板中的 Cycles &amp; Roots查看循环泄露</p>
+<p><strong>To investigate a leaked object using cycles and roots 使用cycles and roots 查找泄露对象</strong></p>
+<p>1：Click the Leaks instrument in the timeline pane to display leak-related information in the detail pane.    点击Leaks instrument 显示相关的内存泄露信息</p>
+<p>2：Choose Cycles &amp; Roots from the detail type list in the navigation bar of the detail pane. 选择详情面板导航条上的Cycles &amp; Roots</p>
+<p>A list of leaked objects by cycle is displayed.  可以看到循环引用的对象，下图是两个对象发生循环引用之后显示的图表：</p>
+<p>3：Select an object you want to investigate.  选择想要调查的对象</p>
+<p>4：If available, view the object graph for the object. 如果可以，查看对象的图表</p>
+<p>5：Click the focus arrow (<img src="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/icon_detail_pane_gotoarrow_2x.png" alt="image: ../Art/icon_detail_pane_gotoarrow_2x.png">) next to the object to display the memory history of the object in the detail pane, along with corresponding reference counts and method calls.   </p>
+<p>6：Press Command-3 to display a stack trace for the selected object in the extended detail area of the inspector.</p>
+<p>7：Click the Collapse button (<img src="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_hidesystemcalls_button_2x.png" alt="image: ../Art/inline_hidesystemcalls_button_2x.png">) in the extended detail area to hide system calls in the stack trace. This makes it easier to locate your app’s methods.</p>
+<p>8：Double-click a method in the stack trace to display its code in Instruments.</p>
+<p>9：Click the Xcode button (<img src="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_xcode_2x.png" alt="image: ../Art/inline_xcode_2x.png">) at the top of the detail pane to open the code in Xcode for review and editing.</p>
+<hr>
+<p><strong>To investigate a leak using the call tree 使用call tree查找泄露</strong></p>
+<p>1：Click the Leaks instrument in the timeline pane to display leak-related information in the detail pane.</p>
+<p>2：Select Call Tree from the detail type list in the navigation bar of the detail pane.A list of method calls related to any detected leaks is displayed.</p>
+<p>3：Press Command-2 to show the display settings area in the inspector pane.</p>
+<p>4：Under the Call Tree display settings, select Invert Call Tree and Hide System Libraries.</p>
+<p>The most recent method calls are shown first. It also helps narrow down the list of method calls to ones made by your app. Method calls made by your app are colored black and preceded by a user code icon</p>
+<p>5：Select a method call you want to investigate.</p>
+<p>6：Press Command-3 to display a stack trace for the selected method call in the extended detail area of the inspector.</p>
+<p>7：Double-click the method call in the stack trace to display its code in Instruments.</p>
+<p>8：Click the Xcode button at the top of the detail pane to open the code in Xcode for review and editing.</p>
+<p>虽然Instruments能够帮助我们检测内存泄露，但是我们仍然需要仔细查看相关的内存历史和代码来确定并解决问题，下面是一些常常导致泄露的情形：</p>
+<p>1：Retain has been called on an object without a corresponding release call when the object is no longer referenced. 循环是当一个对象不再被引用的时候，被没有进行对应的释放</p>
+<p>2：An object has been allocated and initialized with APIs that don’t cause the object to autorelease.  对象有被创建和初始化但是并没有被释放</p>
+<p>3：If a leak isn’t an object, you may be calling an API that assumes ownership of a <code>malloc</code>-created memory block, and you are missing a corresponding call to <code>free()</code>. </p>
+<h1 id="Find-Zombies"><a href="#Find-Zombies" class="headerlink" title="Find Zombies"></a>Find Zombies</h1><p>Zombies性能分析模板使用Allocations工具测量APP的内存使用，集中监测“zombie”对象，该对象是对象被调用，但是该对象已经被释放之后并不存在。</p>
+<p>在这个模板中，Allocations工具已经配置了能够检测 NSZombie检测。这是调试模型(debug mode)，需要设置环境变量 <code>NSZombieEnabled</code> 为true，指引编译器使用任意对象替代NSZombie类型的对象，该NSZombie类型的对象已经被释放并且引用计数为0(即对象不存在)。如果向这些已经被释放的对象发送信息，这些对象将被标记，当APP崩溃，记录停止，Zombie信息对话显示。我们能够检测Zombie对象的历史retain和release，确定问题发生的准确位置。</p>
+<p><strong>注意：</strong>Zombies模板由于改变了环境，以至于应该被释放的对象并没有真正的被释放，所以导致内存持续增长。这是预期的行为，这也意味除了标志zombie和内存地址，其它由Allocation工具提供的数据应该被忽略，我们不应该添加Leaks工具到Zombies模板，这将导致不准确的结果，对于iOS APP，使用Zombies模板需要使用iOS模拟器而不是真机。</p>
+<p><strong>To look for zombies in your app</strong></p>
+<p>1：Launch Instruments.</p>
+<p>2：In the profiling template selection dialog that appears, click Zombies.</p>
+<p>3：Choose your device and app from the target device and process lists.</p>
+<p>4：Click Choose to create a trace document.</p>
+<p>5：Click the Record button (<img src="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_record_button_2x.png" alt="image: ../Art/inline_record_button_2x.png">) in the toolbar (or press Command-R) to begin recording.</p>
+<p>6：Use your app normally. </p>
+<p>如果调用了已经被释放的对象，那么将会在时间轴面板中插入标记，并且显示 Zombie 信息对话框，在具体内存地址显示信息被发送给了已经释放的对象。</p>
+<p>如果关闭Zombie 信息对话框，可以点击标识能够重新打开。</p>
+<p>7：Click the focus arrow (<img src="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/icon_detail_pane_gotoarrow_2x.png" alt="image: ../Art/icon_detail_pane_gotoarrow_2x.png">) next to the zombie’s memory address to display the memory history of the zombie object in the detail pane, along with corresponding reference counts and method calls. </p>
+<p>8：Select the Zombie event (or any other event you want to investigate) in the detail pane.</p>
+<p>9：Press Command-3 to display a stack trace for the selected event in the extended detail area of the inspector.</p>
+<p>10：Click the Collapse button (<img src="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_hidesystemcalls_button_2x.png" alt="image: ../Art/inline_hidesystemcalls_button_2x.png">) in the extended detail area to hide system calls in the stack trace. This makes it easier to locate your app’s methods.Calls made by your app are colored black and preceded by a user code icon (<img src="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_usercode_icon_2x.png" alt="image: ../Art/inline_usercode_icon_2x.png">).</p>
+<p>11：Double-click a method in the stack trace to display its code in Instruments.</p>
+<p>12：Click the Xcode button (<img src="https://developer.apple.com/library/content/documentation/DeveloperTools/Conceptual/InstrumentsUserGuide/Art/inline_xcode_2x.png" alt="image: ../Art/inline_xcode_2x.png">) at the top of the detail pane to open the code in Xcode for editing.</p>
+<p>虽然Instruments能够帮助我们检测zombies,，但是我们仍然需要仔细查看相关的内存历史和代码来确定并解决问题，下面是一些常常导致泄露的情形：</p>
+<p>1：An object has already been released (or autoreleased), and your app tries to release it again. 对象已经被释放掉，APP尝试再release</p>
+<p>2：An object hasn’t been retained when it should have been. 当对象需要被retained的时候并没有被retained</p>
+<p>3：Some other call is made to an object after it has been released. 在对象释放之后，被再次使用</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/14/内存管理之-引用计数/" rel="next" title="内存管理之 引用计数">
+                <i class="fa fa-chevron-left"></i> 内存管理之 引用计数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/14/数据库-性能/" rel="prev" title="数据库 - 性能">
+                数据库 - 性能 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="爱生活的小悦悦" />
+          <p class="site-author-name" itemprop="name">爱生活的小悦悦</p>
+           
+              <p class="site-description motion-element" itemprop="description">Do one thing at a time and do well</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sunxyy" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/3778165280" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存检测-instrument"><span class="nav-number">1.</span> <span class="nav-text">内存检测 - instrument</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于Instruments"><span class="nav-number">1.1.</span> <span class="nav-text">关于Instruments</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Instruments-Workflow"><span class="nav-number">2.</span> <span class="nav-text">The Instruments Workflow</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#了解何时使用Instruments"><span class="nav-number">2.1.</span> <span class="nav-text">了解何时使用Instruments</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#About-This-Document-文档结构说明"><span class="nav-number">3.</span> <span class="nav-text">About This Document 文档结构说明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Prerequisites-先决条件"><span class="nav-number">3.1.</span> <span class="nav-text">Prerequisites 先决条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#System-Requirements-系统要求"><span class="nav-number">3.2.</span> <span class="nav-text">System Requirements 系统要求</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-About-Memory-Analysis"><span class="nav-number"></span> <span class="nav-text">2. About Memory Analysis</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Monitor-Memory-Usage"><span class="nav-number"></span> <span class="nav-text">Monitor Memory Usage</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Find-Abandoned-Memory"><span class="nav-number"></span> <span class="nav-text">Find Abandoned Memory</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Find-Memory-Leaks"><span class="nav-number"></span> <span class="nav-text">Find Memory Leaks</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Find-Zombies"><span class="nav-number"></span> <span class="nav-text">Find Zombies</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">爱生活的小悦悦</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"> 访问人数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"> 访问总量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

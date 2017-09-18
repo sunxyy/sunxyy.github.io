@@ -381,12 +381,12 @@
 <li><p>部署Hexo到Github Pages</p>
 </li>
 </ol>
-<h4 id="安装前提"><a href="#安装前提" class="headerlink" title="安装前提"></a>安装前提</h4><p>安装 Hexo 相当简单。然而在安装前，您必须检查电脑中是否已安装下列应用程序：</p>
+<h4 id="安装前提"><a href="#安装前提" class="headerlink" title="安装前提"></a>安装前提</h4><p>安装 Hexo 相当简单。然而在安装前，先必须检查电脑中是否已安装下列应用程序：</p>
 <ul>
 <li><a href="http://nodejs.org/" target="_blank" rel="external">Node.js</a></li>
 <li><a href="http://git-scm.com/" target="_blank" rel="external">Git</a></li>
 </ul>
-<p>如果您的电脑中已经安装上述必备程序，那么恭喜您！接下来只需要使用 npm 即可完成 Hexo 的安装。</p>
+<p>如果电脑中已经安装上述必备程序，那么恭喜！接下来只需要使用 npm 即可完成 Hexo 的安装。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm install -g hexo-cli</div></pre></td></tr></table></figure>
 <h4 id="安装-Node-js"><a href="#安装-Node-js" class="headerlink" title="安装 Node.js"></a>安装 Node.js</h4><p>安装 Node.js 的最佳方式是使用 <a href="https://github.com/creationix/nvm" target="_blank" rel="external">nvm</a>。</p>
 <p>cURL:</p>
@@ -410,8 +410,7 @@
 <p><strong>scaffolds</strong>: <a href="https://hexo.io/zh-cn/docs/writing.html" target="_blank" rel="external">模版</a> 文件夹。当新建文章时，Hexo 会根据 scaffold 来建立文件。Hexo的模板是指在新建的markdown文件中默认填充的内容。例如，如果您修改scaffold/post.md中的Front-matter内容，那么每次新建一篇文章时都会包含这个修改。</p>
 <p><strong>source</strong>: 资源文件夹是存放用户资源的地方。除 <code>_posts</code> 文件夹之外，开头命名为 <code>_</code> (下划线)的文件 / 文件夹和隐藏的文件将会被忽略。Markdown 和 HTML 文件会被解析并放到 <code>public</code> 文件夹，而其他文件会被拷贝过去。</p>
 <p><strong>themes</strong> :<a href="https://hexo.io/zh-cn/docs/themes.html" target="_blank" rel="external">主题</a> 文件夹。Hexo 会根据主题来生成静态页面。</p>
-<h4 id="主题设置"><a href="#主题设置" class="headerlink" title="主题设置"></a>主题设置</h4><p>采用的主题是Next，接下来以Next为例。</p>
-<p>参考文档：[Next官网]<a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="external">http://theme-next.iissnan.com/getting-started.html</a></p>
+<h4 id="主题设置"><a href="#主题设置" class="headerlink" title="主题设置"></a>主题设置</h4><p>主题设置以Next主题为例，参考Next官方文档：[Next官网]<a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="external">http://theme-next.iissnan.com/getting-started.html</a></p>
 <p>在 Hexo 中有两份主要的配置文件，其名称都是 <code>_config.yml</code>。 其中，一份位于站点根目录下，主要包含 Hexo 本身的配置；另一份位于主题目录下，这份配置由主题作者提供，主要用于配置主题相关的选项。</p>
 <p>为了描述方便，在以下说明中，将前者称为 站点配置文件， 后者称为 主题配置文件。</p>
 <p><strong>安装 NexT</strong></p>
@@ -451,7 +450,7 @@
 <p>在项目“Setting”中设置开启GitHub page，设置如下图，设置成功之后，可以看到上方实现你的站点发布地址。</p>
 <p><img src="/images/6.png" alt="启用GitHub page"></p>
 <h4 id="部署Hexo到Github-Pages"><a href="#部署Hexo到Github-Pages" class="headerlink" title="部署Hexo到Github Pages"></a>部署Hexo到Github Pages</h4><ul>
-<li>打开本地的MyBlog文件夹项目内的_config.yml配置文件，将其中的type设置为git</li>
+<li>打开站点配置文件，将其中的type设置为git</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">deploy:</div><div class="line">type: git</div><div class="line">repository: https://github.com/sunxyy/sunxyy.github.io.git</div><div class="line">branch: master</div></pre></td></tr></table></figure>
 <ul>
